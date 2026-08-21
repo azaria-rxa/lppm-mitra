@@ -76,7 +76,21 @@ Beberapa keputusan arsitektur penting:
 
 > Jalankan semua perintah dari akar repositori ini.
 
-### 1. Clone & instal dependensi
+### 1. Clone repository (mengunduh project dari GitHub)
+
+**Clone** artinya mengunduh salinan lengkap repositori ini — seluruh kode,
+riwayat commit, dan cabang — langsung dari GitHub ke komputer Anda. Ini langkah
+pertama jika Anda belum memiliki filenya sama sekali.
+
+```bash
+git clone https://github.com/azaria-rxa/lppm-mitra.git
+cd lppm-mitra
+```
+
+Perintah di atas membuat folder baru bernama `lppm-mitra` berisi seluruh isi
+repositori. Setelah clone selesai, lanjutkan ke langkah instalasi di bawah.
+
+### 2. Instal dependensi
 
 ```bash
 npm install
@@ -84,7 +98,7 @@ npm install
 
 Perintah `postinstall` otomatis menjalankan `prisma generate`.
 
-### 2. Jalankan MySQL (opsional, via Docker)
+### 3. Jalankan MySQL (opsional, via Docker)
 
 ```bash
 docker compose up -d
@@ -93,7 +107,7 @@ docker compose up -d
 Perintah ini membuat database `sikap_lppm` (user `root`, password `rootpass-dev`) di port `3306`.
 Jika Anda sudah punya MySQL sendiri, lewati langkah ini dan sesuaikan `.env`.
 
-### 3. Konfigurasi environment
+### 4. Konfigurasi environment
 
 ```bash
 cp .env.example .env
@@ -103,7 +117,7 @@ Lalu isi `DATABASE_URL`, `NEXTAUTH_URL`, `NEXTAUTH_SECRET` (mis. hasil
 `openssl rand -base64 32`). Jika ingin email benar-benar terkirim, isi `SMTP_*`
 (mis. akun gratis di https://ethereal.email).
 
-### 4. Sinkronkan skema ke database & seed data contoh
+### 5. Sinkronkan skema ke database & seed data contoh
 
 **Opsi A — Prisma (disarankan untuk pengembangan):**
 
@@ -130,7 +144,7 @@ Dump ini membuat ulang database `sikap_lppm` dari nol (`DROP DATABASE IF EXISTS`
 di awal file), jadi hati-hati jika menjalankannya di database yang sudah berisi data.
 Setelah import, jalankan tetap `npx prisma generate` agar Prisma Client tersedia.
 
-### 5. Jalankan aplikasi
+### 6. Jalankan aplikasi
 
 ```bash
 npm run dev            # Development  -> http://localhost:3000
@@ -146,6 +160,61 @@ npm run build && npm run start   # Production (termasuk build PWA service worker
 | Mitra (contoh) | `desabinaan.sejahtera@example.com` | `Mitra123!` |
 
 > Ubah password default sebelum digunakan di lingkungan nyata.
+
+---
+
+## Menyinkronkan dengan GitHub (`git pull`)
+
+### Buat apa `git pull`?
+
+Repositori ini bisa dikerjakan oleh beberapa orang (atau dari beberapa komputer).
+Ketika seseorang melakukan `git push`, perubahan tersimpan di GitHub — tetapi
+komputer Anda **tidak otomatis ikut berubah**. Di sinilah `git pull` berperan:
+
+> **`git pull` mengambil commit terbaru dari GitHub dan menggabungkannya ke
+> kode di komputer Anda**, sehingga versi lokal selalu sama dengan versi
+> terbaru di repositori.
+
+Kapan sebaiknya dilakukan:
+- **Sebelum mulai bekerja** setiap hari, agar Anda mengedit kode dari versi terbaru.
+- **Sebelum melakukan `git push`**, untuk memastikan tidak ada perubahan rekan yang belum tergabung.
+- Setiap kali ada pemberitahuan bahwa "sudah ada update di repo".
+
+### Cara menggunakan
+
+```bash
+# pastikan berada di dalam folder project
+cd lppm-mitra
+
+git pull origin main
+```
+
+Perintah ini mengunduh commit baru dari cabang `main` di GitHub lalu langsung
+menggabungkannya. Jika muncul editor teks meminta pesan merge, simpan saja dan
+tutup (biasanya cukup menekan `:wq` lalu Enter di vim).
+
+Setelah pull selesai, sebaiknya jalankan kembali:
+
+```bash
+npm install          # jika ada dependensi baru yang ditambahkan rekan
+npm run prisma:push  # jika ada perubahan skema database
+```
+
+### Jika terjadi konflik
+
+Konflik muncul ketika Anda dan orang lain mengubah baris yang sama. Git akan
+menandai bagian tersebut dengan `<<<<<<<`, `=======`, dan `>>>>>>>`. Cara
+penyelesaian singkatnya:
+
+1. Buka file yang disebutkan git, putuskan kode mana yang dipertahankan, lalu hapus penanda konfliknya.
+2. Lanjutkan dengan:
+
+```bash
+git add .
+git commit -m "resolve merge conflict"
+```
+
+Tips: lakukan `git pull` secara rutin agar perbedaan selalu kecil dan konflik mudah diselesaikan.
 
 ---
 
