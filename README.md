@@ -98,14 +98,63 @@ npm install
 
 Perintah `postinstall` otomatis menjalankan `prisma generate`.
 
-### 3. Jalankan MySQL (opsional, via Docker)
+### 3. Siapkan database MySQL (pilih **salah satu**)
+
+Aplikasi membutuhkan MySQL 8 yang berjalan di `localhost:3306`. Pilih cara
+yang paling nyaman bagi Anda:
+
+#### Opsi A — Docker (paling cepat, tanpa instalasi manual)
 
 ```bash
 docker compose up -d
 ```
 
-Perintah ini membuat database `sikap_lppm` (user `root`, password `rootpass-dev`) di port `3306`.
-Jika Anda sudah punya MySQL sendiri, lewati langkah ini dan sesuaikan `.env`.
+Perintah ini membuat container MySQL 8 dengan database `sikap_lppm`
+(user `root`, password `rootpass-dev`, port `3306`) secara otomatis.
+`.env` bawaan contoh sudah cocok dengan pengaturan ini.
+
+#### Opsi B — XAMPP
+
+1. Buka **XAMPP Control Panel** → klik **Start** pada modul **MySQL**
+   (Apache tidak wajib dinyalakan).
+2. Buat database bernama `sikap_lppm` — lewat browser di
+   [http://localhost/phpmyadmin](http://localhost/phpmyadmin) → tab **Databases**
+   → ketik nama → **Create**, atau lewat terminal:
+
+   ```bash
+   C:\xampp\mysql\bin\mysql -u root -e "CREATE DATABASE sikap_lppm"
+   ```
+
+3. Sesuaikan `.env` (XAMPP default: user `root` tanpa password):
+
+   ```env
+   DATABASE_URL="mysql://root:@localhost:3306/sikap_lppm"
+   ```
+
+> Catatan: XAMPP bawaan kadang menyertakan MySQL versi lama (MariaDB).
+> Jika `prisma db push` error soal versi/fitur, gunakan Opsi A atau C.
+
+#### Opsi C — MySQL Installer (MySQL Community Server)
+
+1. Unduh & instal dari [dev.mysql.com/downloads/installer](https://dev.mysql.com/downloads/installer/)
+   (pilih setup *Server only* cukup).
+2. Saat instalasi, simpan password root yang Anda buat.
+3. Pastikan layanan MySQL berjalan (`services.msc` → **MySQL80** → Running),
+   lalu buat database-nya:
+
+   ```bash
+   mysql -u root -p -e "CREATE DATABASE sikap_lppm CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;"
+   ```
+
+4. Sesuaikan `.env` dengan password Anda:
+
+   ```env
+   DATABASE_URL="mysql://root:PASSWORD_ANDA@localhost:3306/sikap_lppm"
+   ```
+
+Setelah salah satu opsi di atas selesai, lanjut ke langkah berikutnya.
+Tidak perlu menjalankan lebih dari satu opsi sekaligus (port 3306 hanya boleh
+dipakai satu server MySQL).
 
 ### 4. Konfigurasi environment
 
