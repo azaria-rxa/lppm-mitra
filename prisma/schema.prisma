@@ -60,7 +60,7 @@ model Mitra {
 model Kuesioner {
   id          String             @id @default(cuid())
   judul       String
-  deskripsi   String?
+  deskripsi   String?            @db.Text
   isActive    Boolean            @default(true)
   createdById String
   createdBy   User               @relation("KuesionerDibuatOleh", fields: [createdById], references: [id])
@@ -75,7 +75,7 @@ model Pertanyaan {
   id           String            @id @default(cuid())
   kuesionerId  String
   kuesioner    Kuesioner         @relation(fields: [kuesionerId], references: [id], onDelete: Cascade)
-  teks         String
+  teks         String            @db.Text
   tipe         TipePertanyaan
   urutan       Int
   opsi         Opsi[]

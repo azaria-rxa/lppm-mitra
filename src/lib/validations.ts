@@ -8,20 +8,20 @@ const tipePertanyaanEnum = z.nativeEnum(TipePertanyaan);
 // ===== Kuesioner =====
 export const opsiSchema = z.object({
   id: z.string().optional(),
-  teks: z.string().min(1, "Teks opsi wajib diisi"),
+  teks: z.string().min(1, "Teks opsi wajib diisi").max(200, "Teks opsi maksimal 200 karakter"),
 });
 
 export const pertanyaanSchema = z.object({
   id: z.string().optional(),
-  teks: z.string().min(1, "Teks pertanyaan wajib diisi"),
+  teks: z.string().min(1, "Teks pertanyaan wajib diisi").max(1000, "Teks pertanyaan maksimal 1000 karakter"),
   tipe: tipePertanyaanEnum,
   urutan: z.number().int().min(0),
   opsi: z.array(opsiSchema),
 });
 
 export const kuesionerCreateSchema = z.object({
-  judul: z.string().min(3, "Judul minimal 3 karakter"),
-  deskripsi: z.string().max(2000).optional().or(z.literal("")),
+  judul: z.string().min(3, "Judul minimal 3 karakter").max(190, "Judul maksimal 190 karakter"),
+  deskripsi: z.string().max(2000, "Deskripsi maksimal 2000 karakter").optional().or(z.literal("")),
   isActive: z.boolean().default(true),
   pertanyaan: z.array(pertanyaanSchema).min(1, "Minimal 1 pertanyaan"),
 });
@@ -32,10 +32,10 @@ export const kuesionerUpdateSchema = kuesionerCreateSchema.partial().extend({
 
 // ===== Mitra =====
 const mitraObjek = z.object({
-  nama: z.string().min(2, "Nama mitra minimal 2 karakter"),
+  nama: z.string().min(2, "Nama mitra minimal 2 karakter").max(150, "Nama mitra maksimal 150 karakter"),
   jenis: jenisMitraEnum,
-  kontak: z.string().min(5, "Kontak (email/telepon) tidak valid"),
-  emailAkun: z.string().email("Email akun tidak valid").optional().or(z.literal("")),
+  kontak: z.string().min(5, "Kontak (email/telepon) tidak valid").max(190, "Kontak maksimal 190 karakter"),
+  emailAkun: z.string().email("Email akun tidak valid").max(190).optional().or(z.literal("")),
   passwordAkun: z.string().min(6, "Password minimal 6 karakter").optional().or(z.literal("")),
 });
 
@@ -85,15 +85,15 @@ const peranStaf = z.enum([Role.ADMIN, Role.PIMPINAN], {
 });
 
 export const penggunaCreateSchema = z.object({
-  nama: z.string().min(2, "Nama minimal 2 karakter"),
-  email: z.string().email("Email tidak valid"),
+  nama: z.string().min(2, "Nama minimal 2 karakter").max(150, "Nama maksimal 150 karakter"),
+  email: z.string().email("Email tidak valid").max(190),
   password: z.string().min(6, "Password minimal 6 karakter"),
   role: peranStaf,
 });
 
 export const penggunaUpdateSchema = z.object({
-  nama: z.string().min(2, "Nama minimal 2 karakter").optional(),
-  email: z.string().email("Email tidak valid").optional(),
+  nama: z.string().min(2, "Nama minimal 2 karakter").max(150, "Nama maksimal 150 karakter").optional(),
+  email: z.string().email("Email tidak valid").max(190).optional(),
   password: z.string().min(6, "Password minimal 6 karakter").optional().or(z.literal("")),
   role: peranStaf.optional(),
 });
