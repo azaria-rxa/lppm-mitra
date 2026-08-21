@@ -1,0 +1,21 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: sikap-lppm-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass-dev
+      MYSQL_DATABASE: sikap_lppm
+      TZ: Asia/Jakarta
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-prootpass-dev"]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+
+volumes:
+  mysql_data:

@@ -1,0 +1,137 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  PIMPINAN
+  MITRA
+}
+
+enum JenisMitra {
+  DESA_BINAAN
+  INDUSTRI
+  INSTANSI_PEMERINTAH
+}
+
+enum TipePertanyaan {
+  SKALA_1_5
+  PILIHAN_GANDA
+  TEKS_BEBAS
+}
+
+enum Sentimen {
+  POSITIF
+  NETRAL
+  NEGATIF
+}
+
+model User {
+  id           String      @id @default(cuid())
+  nama         String
+  email        String      @unique
+  passwordHash String
+  role         Role        @default(MITRA)
+  mitra        Mitra?
+  kuesioners   Kuesioner[] @relation("KuesionerDibuatOleh")
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+}
+
+model Mitra {
+  id        String           @id @default(cuid())
+  nama      String
+  jenis     JenisMitra
+  kontak    String
+  userId    String?          @unique
+  user      User?            @relation(fields: [userId], references: [id], onDelete: SetNull)
+  qrToken   String?          @unique
+  responses SurveiResponse[]
+  notifikasi NotifikasiEmail[]
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+}
+
+model Kuesioner {
+  id          String             @id @default(cuid())
+  judul       String
+  deskripsi   String?
+  isActive    Boolean            @default(true)
+  createdById String
+  createdBy   User               @relation("KuesionerDibuatOleh", fields: [createdById], references: [id])
+  pertanyaan  Pertanyaan[]
+  responses   SurveiResponse[]
+  notifikasi  NotifikasiEmail[]
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+}
+
+model Pertanyaan {
+  id           String            @id @default(cuid())
+  kuesionerId  String
+  kuesioner    Kuesioner         @relation(fields: [kuesionerId], references: [id], onDelete: Cascade)
+  teks         String
+  tipe         TipePertanyaan
+  urutan       Int
+  opsi         Opsi[]
+  jawaban      JawabanResponse[]
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+
+  @@index([kuesionerId, urutan])
+}
+
+model Opsi {
+  id           String            @id @default(cuid())
+  pertanyaanId String
+  pertanyaan   Pertanyaan        @relation(fields: [pertanyaanId], references: [id], onDelete: Cascade)
+  teks         String
+  jawaban      JawabanResponse[]
+}
+
+model SurveiResponse {
+  id          String            @id @default(cuid())
+  kuesionerId String
+  kuesioner   Kuesioner         @relation(fields: [kuesionerId], references: [id], onDelete: Cascade)
+  mitraId     String
+  mitra       Mitra             @relation(fields: [mitraId], references: [id], onDelete: Cascade)
+  submittedAt DateTime          @default(now())
+  jawaban     JawabanResponse[]
+
+  @@unique([kuesionerId, mitraId])
+  @@index([kuesionerId, submittedAt])
+}
+
+model JawabanResponse {
+  id               String            @id @default(cuid())
+  surveiResponseId String
+  surveiResponse   SurveiResponse    @relation(fields: [surveiResponseId], references: [id], onDelete: Cascade)
+  pertanyaanId     String
+  pertanyaan       Pertanyaan        @relation(fields: [pertanyaanId], references: [id], onDelete: Cascade)
+  nilaiSkala       Int?
+  opsiId           String?
+  opsi             Opsi?             @relation(fields: [opsiId], references: [id])
+  teksBebas        String?           @db.Text
+  sentimen         Sentimen?
+  createdAt        DateTime          @default(now())
+
+  @@index([surveiResponseId])
+}
+
+model NotifikasiEmail {
+  id           String    @id @default(cuid())
+  mitraId      String
+  mitra        Mitra     @relation(fields: [mitraId], references: [id], onDelete: Cascade)
+  kuesionerId  String
+  kuesioner    Kuesioner @relation(fields: [kuesionerId], references: [id], onDelete: Cascade)
+  jenis        String
+  status       String    @default("TERKIRIM")
+  dikirimAt    DateTime  @default(now())
+
+  @@index([kuesionerId, mitraId])
+}
