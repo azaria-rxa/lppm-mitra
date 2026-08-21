@@ -11,7 +11,9 @@ export default async function MitraLayout({ children }: { children: React.ReactN
   return (
     <div className="min-h-dvh bg-slate-50">
       <MitraNav user={user} />
-      <main className="mx-auto max-w-lg px-4 pb-24 pt-4 safe-bottom">{children}</main>
+      <main className="px-4 pb-24 pt-4 lg:ml-72 lg:px-10 lg:pb-10 lg:pt-8">
+        <div className="mx-auto w-full max-w-lg lg:max-w-3xl">{children}</div>
+      </main>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import {
@@ -72,11 +73,20 @@ export function AdminSidebar({ user }: Props) {
 
   const SidebarKonten = (
     <div className="flex h-full flex-col">
-      <div className="flex h-16 items-center gap-2 border-b px-5">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-          <ClipboardList className="h-4 w-4" />
-        </div>
-        <span className="font-bold">SIKAP LPPM</span>
+      <div className="flex h-16 items-center gap-2.5 border-b px-5">
+        <Image
+          src="/assets/unnes-logo.png"
+          alt="Logo UNNES"
+          width={32}
+          height={32}
+          className="h-8 w-8 object-contain"
+        />
+        <span className="leading-tight">
+          <span className="block font-serif text-base font-bold tracking-tight">SIKAP LPPM</span>
+          <span className="block text-[11px] uppercase tracking-widest text-slate-400">
+            {user.role === "ADMIN" ? "Panel Admin" : "Panel Pimpinan"}
+          </span>
+        </span>
         <button className="ml-auto rounded p-1 text-slate-500 lg:hidden" onClick={() => setOpen(false)} aria-label="Tutup menu">
           <X className="h-5 w-5" />
         </button>
@@ -123,6 +133,13 @@ export function AdminSidebar({ user }: Props) {
         <Button variant="ghost" size="icon" onClick={() => setOpen(true)} aria-label="Buka menu">
           <Menu className="h-5 w-5" />
         </Button>
+        <Image
+          src="/assets/unnes-logo.png"
+          alt="Logo UNNES"
+          width={28}
+          height={28}
+          className="h-7 w-7 object-contain"
+        />
         <span className="font-bold">SIKAP LPPM</span>
         <div className="ml-auto flex items-center gap-2 text-xs text-slate-500">
           <span>{user.nama}</span>
