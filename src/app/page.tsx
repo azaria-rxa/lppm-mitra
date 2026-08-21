@@ -70,7 +70,7 @@ export default function HomePage() {
             sizes="100vw"
             className="object-cover"
           />
-          <div className="absolute inset-0 bg-slate-950/70" />
+          <div className="absolute inset-0 bg-gradient-to-t from-blue-950/95 via-blue-950/55 to-blue-950/40" />
         </div>
 
         <div className="relative mx-auto max-w-6xl px-4 py-28 sm:px-6 sm:py-36">
@@ -105,26 +105,26 @@ export default function HomePage() {
       </section>
 
       {/* BARIS FAKTA */}
-      <section className="border-b border-slate-200">
-        <div className="mx-auto grid max-w-6xl grid-cols-1 divide-y divide-slate-200 px-4 sm:grid-cols-3 sm:divide-x sm:divide-y-0 sm:px-6">
+      <section className="gradient-unnes">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 divide-y divide-white/10 px-4 sm:grid-cols-3 sm:divide-x sm:divide-y-0 sm:px-6">
           {[
             ["3 jenis mitra", "Desa binaan, industri, instansi pemerintah"],
             ["Satu respons per mitra", "Data dijaga agar tetap representatif"],
             ["Rekap tanpa jeda", "Hasil terbaca seketika setelah dikirim"],
           ].map(([judul, sub]) => (
             <div key={judul} className="py-6 sm:px-8 sm:first:pl-0">
-              <p className="font-serif text-lg font-bold">{judul}</p>
-              <p className="mt-1 text-sm text-slate-600">{sub}</p>
+              <p className="font-serif text-lg font-bold text-white">{judul}</p>
+              <p className="mt-1 text-sm text-blue-200">{sub}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* TENTANG */}
-      <section id="tentang" className="scroll-mt-20 py-20 sm:py-24">
+      <section id="tentang" className="scroll-mt-20 bg-gradient-to-b from-blue-50/60 to-white py-20 sm:py-24">
         <div className="mx-auto grid max-w-6xl gap-12 px-4 sm:px-6 lg:grid-cols-[1fr_1.4fr]">
           <div>
-            <p className="text-xs font-medium uppercase tracking-[0.2em] text-slate-500">Tentang</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-800">Tentang</p>
             <h2 className="mt-3 font-serif text-3xl font-bold leading-snug sm:text-4xl">
               Masukan mitra adalah bahan evaluasi, bukan formalitas.
             </h2>
@@ -146,9 +146,9 @@ export default function HomePage() {
       </section>
 
       {/* FITUR */}
-      <section id="fitur" className="scroll-mt-20 border-t border-slate-200 py-20 sm:py-24">
+      <section id="fitur" className="scroll-mt-20 border-t border-blue-100 py-20 sm:py-24">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <p className="text-xs font-medium uppercase tracking-[0.2em] text-slate-500">Fitur</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-800">Fitur</p>
           <h2 className="mt-3 max-w-xl font-serif text-3xl font-bold leading-snug sm:text-4xl">
             Cukup apa adanya, tanpa fitur yang tidak terpakai.
           </h2>
@@ -171,9 +171,9 @@ export default function HomePage() {
       </section>
 
       {/* PERAN */}
-      <section id="peran" className="scroll-mt-20 border-t border-slate-200 py-20 sm:py-24">
+      <section id="peran" className="scroll-mt-20 border-t border-blue-100 py-20 sm:py-24">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <p className="text-xs font-medium uppercase tracking-[0.2em] text-slate-500">Peran</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-800">Peran</p>
           <h2 className="mt-3 font-serif text-3xl font-bold leading-snug sm:text-4xl">
             Tiga peran, satu alur kerja.
           </h2>
@@ -184,7 +184,7 @@ export default function HomePage() {
               return (
                 <div
                   key={p.label}
-                  className={`group md:px-10 ${i > 0 ? "md:border-l md:border-slate-200" : "md:pr-10"} ${
+                  className={`group md:px-10 ${i > 0 ? "md:border-l md:border-blue-100" : "md:pr-10"} ${
                     i === 0 ? "md:pl-0" : ""
                   }`}
                 >
@@ -199,41 +199,44 @@ export default function HomePage() {
       </section>
 
       {/* PENUTUP */}
-      <section className="border-t border-slate-200 bg-slate-50 py-16">
+      <section className="gradient-unnes py-16">
         <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-6 px-4 sm:flex-row sm:items-center sm:px-6">
           <div>
-            <h2 className="font-serif text-2xl font-bold sm:text-3xl">
+            <h2 className="font-serif text-2xl font-bold text-white sm:text-3xl">
               Sudah menerima undangan survei?
             </h2>
-            <p className="mt-2 text-sm text-slate-600">
+            <p className="mt-2 text-sm text-blue-200">
               Masuk dengan akun yang diberikan admin LPPM, atau pindai QR code dari email Anda.
             </p>
           </div>
           <Link
             href="/login"
-            className="inline-flex shrink-0 items-center bg-slate-900 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-slate-700"
+            className="group inline-flex shrink-0 items-center rounded-full bg-gradient-to-b from-amber-400 to-amber-500 px-6 py-3 text-sm font-semibold text-blue-950 shadow-lg shadow-amber-500/20 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-amber-500/30"
           >
-            Halaman Masuk <ArrowRight className="ml-2 h-4 w-4" />
+            Halaman Masuk{" "}
+            <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Link>
         </div>
       </section>
 
       {/* FOOTER */}
-      <footer className="border-t border-slate-200 py-8">
+      <footer className="border-t border-white/10 bg-blue-950 py-8">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-4 text-center sm:flex-row sm:px-6 sm:text-left">
           <div className="flex items-center gap-2.5">
-            <Image
-              src="/assets/unnes-logo.png"
-              alt="Logo UNNES"
-              width={24}
-              height={24}
-              className="h-6 w-6 object-contain"
-            />
-            <p className="text-sm text-slate-600">
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white">
+              <Image
+                src="/assets/unnes-logo.png"
+                alt="Logo UNNES"
+                width={20}
+                height={20}
+                className="h-5 w-5 object-contain"
+              />
+            </span>
+            <p className="text-sm text-blue-200">
               LPPM Universitas Negeri Semarang
             </p>
           </div>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-blue-400">
             © {new Date().getFullYear()} SIKAP LPPM · Dikembangkan dengan Next.js
           </p>
         </div>

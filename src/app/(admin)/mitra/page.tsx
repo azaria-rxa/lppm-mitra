@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import useSWR, { useSWRConfig } from "swr";
 import { Loader2, Pencil, Plus, QrCode, Trash2 } from "lucide-react";
 import { toast } from "sonner";
@@ -19,6 +18,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
   AlertDialog,
@@ -48,6 +48,7 @@ export type MitraList = {
 
 export default function MitraPage() {
   const { mutate } = useSWRConfig();
+  const [openBuat, setOpenBuat] = useState(false);
   const [editData, setEditData] = useState<MitraList | null>(null);
   const [qrData, setQrData] = useState<MitraList | null>(null);
   const [hapusId, setHapusId] = useState<MitraList | null>(null);
@@ -78,11 +79,27 @@ export default function MitraPage() {
             Kelola desa binaan, industri, dan instansi pemerintah yang bekerja sama dengan LPPM.
           </p>
         </div>
-        <Button asChild>
-          <Link href="/mitra/baru">
-            <Plus className="h-4 w-4" /> Tambah Mitra
-          </Link>
-        </Button>
+        <Dialog open={openBuat} onOpenChange={setOpenBuat}>
+          <DialogTrigger asChild>
+            <Button>
+              <Plus className="h-4 w-4" /> Tambah Mitra
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle>Tambah Mitra Baru</DialogTitle>
+              <DialogDescription>
+                Opsional: buatkan akun masuk agar mitra bisa mengisi survei via aplikasi.
+              </DialogDescription>
+            </DialogHeader>
+            <FormMitra
+              onDone={() => {
+                setOpenBuat(false);
+                mutate("/api/mitra");
+              }}
+            />
+          </DialogContent>
+        </Dialog>
       </div>
 
       {error && (
