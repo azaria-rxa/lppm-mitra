@@ -1,260 +1,231 @@
 import Link from "next/link";
 import Image from "next/image";
-import {
-  ArrowRight,
-  BarChart3,
-  Building2,
-  ClipboardList,
-  Eye,
-  FileDown,
-  QrCode,
-  Smartphone,
-  Users,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { ArrowRight } from "lucide-react";
 import { SiteNavbar } from "@/components/site-navbar";
 
 const FITUR = [
   {
-    icon: ClipboardList,
-    judul: "Kuesioner Dinamis",
+    judul: "Kuesioner dinamis",
     deskripsi:
-      "Susun pertanyaan skala 1-5, pilihan ganda, dan teks bebas dengan builder drag-free yang cepat.",
+      "Pertanyaan disusun langsung oleh admin: skala 1–5, pilihan ganda, maupun teks bebas, tanpa perlu sentuh kode.",
   },
   {
-    icon: BarChart3,
-    judul: "Dashboard Real-time",
+    judul: "Rekap real-time",
     deskripsi:
-      "Indeks kepuasan, tren bulanan, dan breakdown per jenis mitra diperbarui otomatis tanpa refresh.",
+      "Setiap respons yang masuk langsung terhitung pada indeks kepuasan, tren bulanan, dan rata-rata per pertanyaan.",
   },
   {
-    icon: Smartphone,
-    judul: "Mobile-first & PWA",
+    judul: "Laporan PDF otomatis",
     deskripsi:
-      "Mitra mengisi survei dari HP dan dapat memasang aplikasi lewat Add to Home Screen.",
+      "Laporan bulanan dan tahunan beserta grafiknya dapat diunduh dalam bentuk PDF siap cetak untuk pimpinan.",
   },
   {
-    icon: FileDown,
-    judul: "Laporan PDF Otomatis",
+    judul: "Akses QR untuk mitra",
     deskripsi:
-      "Ekspor laporan periodik lengkap dengan grafik dalam satu klik, siap untuk pimpinan.",
+      "Tiap mitra menerima tautan dan QR personal. Memindai QR berarti sudah masuk ke halaman survei tanpa password.",
   },
   {
-    icon: QrCode,
-    judul: "Akses Cepat QR Code",
+    judul: "Berbasis web & PWA",
     deskripsi:
-      "Setiap mitra mendapat QR code personal — scan langsung masuk ke halaman survei tanpa password.",
+      "Tidak perlu instal aplikasi. Mitra cukup membuka tautan dari HP, dan dapat memasangnya bila diperlukan.",
   },
   {
-    icon: Eye,
-    judul: "Analisis Sentimen",
+    judul: "Catatan sentimen",
     deskripsi:
-      "Jawaban teks bebas otomatis dikategorikan positif, netral, atau negatif untuk insight cepat.",
+      "Saran tertulis otomatis ditandai positif, netral, atau negatif agar masukan penting tidak terlewat.",
   },
 ];
 
 const PERAN = [
   {
-    icon: Building2,
     label: "Admin LPPM",
-    warna: "from-blue-600 to-indigo-600",
-    poin: ["Kelola kuesioner & mitra", "Kirim undangan email", "Pantau semua respons"],
+    deskripsi:
+      "Mengelola kuesioner dan data mitra, mengirim undangan survei, serta memantau seluruh respons yang masuk.",
   },
   {
-    icon: Users,
     label: "Pimpinan",
-    warna: "from-amber-500 to-orange-600",
-    poin: ["Lihat dashboard grafik", "Unduh laporan PDF", "Akses read-only aman"],
+    deskripsi:
+      "Melihat rekap indeks kepuasan dan mengunduh laporan periodik. Akses terbatas pada pembacaan data.",
   },
   {
-    icon: Smartphone,
-    label: "Mitra Eksternal",
-    warna: "from-emerald-500 to-teal-600",
-    poin: ["Isi survei via HP (PWA)", "Login cepat dengan QR", "Riwayat pengisian pribadi"],
+    label: "Mitra",
+    deskripsi:
+      "Desa binaan, industri, dan instansi pemerintah yang mengisi survei melalui perangkat mobile masing-masing.",
   },
-];
-
-const STATISTIK = [
-  { angka: "3", label: "Jenis Mitra" },
-  { angka: "100%", label: "Digital & Paperless" },
-  { angka: "Real-time", label: "Sinkronisasi Data" },
 ];
 
 export default function HomePage() {
   return (
-    <div className="min-h-dvh bg-white">
+    <div className="min-h-dvh bg-white text-slate-900">
       <SiteNavbar />
 
-      {/* HERO dengan background kampus UNNES */}
-      <section className="relative -mt-16 flex min-h-[92dvh] items-center overflow-hidden">
-        <Image
-          src="/assets/background-unnes.jpeg"
-          alt="Lingkungan kampus Universitas Negeri Semarang"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/75 via-slate-950/55 to-slate-950/85" />
+      {/* HERO */}
+      <section className="relative">
+        <div className="absolute inset-0">
+          <Image
+            src="/assets/background-unnes.jpeg"
+            alt="Lingkungan kampus Universitas Negeri Semarang"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-slate-950/70" />
+        </div>
 
-        <div className="relative mx-auto w-full max-w-5xl px-6 pb-20 pt-28 text-center">
-          <p className="mx-auto inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-xs font-semibold text-white backdrop-blur">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-            Sistem Kepuasan Mitra LPPM · Universitas Negeri Semarang
+        <div className="relative mx-auto max-w-6xl px-4 py-28 sm:px-6 sm:py-36">
+          <p className="text-xs font-medium uppercase tracking-[0.2em] text-slate-300">
+            Lembaga Penelitian dan Pengabdian kepada Masyarakat
           </p>
-
-          <h1 className="mx-auto mt-6 max-w-3xl text-4xl font-extrabold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
-            Ukur Indeks Kepuasan Mitra{" "}
-            <span className="bg-gradient-to-r from-sky-300 to-emerald-300 bg-clip-text text-transparent">
-              Lebih Cepat & Terukur
-            </span>
+          <h1 className="mt-5 max-w-3xl font-serif text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl">
+            Sistem Kepuasan Mitra LPPM
           </h1>
-
-          <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-slate-200 sm:text-lg">
-            Platform survei digital untuk desa binaan, industri, dan instansi pemerintah.
-            Satu aplikasi untuk dashboard admin di desktop dan pengisian survei di HP mitra.
+          <p className="mt-6 max-w-xl text-base leading-relaxed text-slate-200 sm:text-lg">
+            Sarana bagi desa binaan, industri, dan instansi pemerintah untuk memberikan
+            penilaian atas kerja sama yang telah berjalan — dan sarana bagi LPPM untuk
+            membacanya secara jujur.
           </p>
-
-          <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-            <Link href="/login">
-              <Button size="lg" className="rounded-full px-8 shadow-lg shadow-primary/30">
-                Masuk ke Aplikasi <ArrowRight className="ml-1 h-4 w-4" />
-              </Button>
+          <div className="mt-10 flex flex-wrap gap-4">
+            <Link
+              href="/login"
+              className="inline-flex items-center bg-white px-6 py-3 text-sm font-medium text-slate-900 transition-colors hover:bg-slate-200"
+            >
+              Masuk Aplikasi <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
-            <Link href="#fitur">
-              <Button
-                size="lg"
-                variant="outline"
-                className="rounded-full border-white/40 bg-white/10 px-8 text-white backdrop-blur hover:bg-white/20 hover:text-white"
-              >
-                Pelajari Fitur
-              </Button>
+            <Link
+              href="#tentang"
+              className="inline-flex items-center border border-white/50 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-white/10"
+            >
+              Tentang Sistem
             </Link>
           </div>
+        </div>
+      </section>
 
-          <div className="mx-auto mt-14 grid max-w-2xl grid-cols-3 divide-x divide-white/15 rounded-2xl border border-white/15 bg-white/5 py-5 backdrop-blur-sm">
-            {STATISTIK.map((s) => (
-              <div key={s.label} className="px-2">
-                <p className="text-xl font-bold text-white sm:text-2xl">{s.angka}</p>
-                <p className="mt-0.5 text-[11px] font-medium uppercase tracking-wide text-slate-300 sm:text-xs">
-                  {s.label}
+      {/* BARIS FAKTA */}
+      <section className="border-b border-slate-200">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 divide-y divide-slate-200 px-4 sm:grid-cols-3 sm:divide-x sm:divide-y-0 sm:px-6">
+          {[
+            ["3 jenis mitra", "Desa binaan, industri, instansi pemerintah"],
+            ["Satu respons per mitra", "Data dijaga agar tetap representatif"],
+            ["Rekap tanpa jeda", "Hasil terbaca seketika setelah dikirim"],
+          ].map(([judul, sub]) => (
+            <div key={judul} className="py-6 sm:px-8 sm:first:pl-0">
+              <p className="font-serif text-lg font-bold">{judul}</p>
+              <p className="mt-1 text-sm text-slate-600">{sub}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* TENTANG */}
+      <section id="tentang" className="scroll-mt-20 py-20 sm:py-24">
+        <div className="mx-auto grid max-w-6xl gap-12 px-4 sm:px-6 lg:grid-cols-[1fr_1.4fr]">
+          <div>
+            <p className="text-xs font-medium uppercase tracking-[0.2em] text-slate-500">Tentang</p>
+            <h2 className="mt-3 font-serif text-3xl font-bold leading-snug sm:text-4xl">
+              Masukan mitra adalah bahan evaluasi, bukan formalitas.
+            </h2>
+          </div>
+          <div className="space-y-5 text-base leading-relaxed text-slate-600">
+            <p>
+              Selama ini penilaian mitra terhadap layanan LPPM banyak dikumpulkan lewat
+              kertas dan tabulasi manual. SIKAP memindahkan proses itu ke web: kuesioner
+              dibuka daring, mitra mengisi dari ponsel masing-masing, dan hasilnya terkumpul
+              dalam satu basis data yang sama.
+            </p>
+            <p>
+              Untuk pimpinan, sistem ini menyajikan indeks kepuasan, tren dari waktu ke
+              waktu, serta perbandingan antar jenis mitra — lengkap dengan laporan PDF yang
+              dapat langsung dilampirkan ke dokumen akreditasi dan pelaporan institusi.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* FITUR */}
+      <section id="fitur" className="scroll-mt-20 border-t border-slate-200 py-20 sm:py-24">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <p className="text-xs font-medium uppercase tracking-[0.2em] text-slate-500">Fitur</p>
+          <h2 className="mt-3 max-w-xl font-serif text-3xl font-bold leading-snug sm:text-4xl">
+            Cukup apa adanya, tanpa fitur yang tidak terpakai.
+          </h2>
+
+          <div className="mt-14 grid gap-x-12 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+            {FITUR.map((f, i) => (
+              <div key={f.judul} className="border-t border-slate-300 pt-5">
+                <p className="font-serif text-sm text-slate-400">
+                  {String(i + 1).padStart(2, "0")}
                 </p>
+                <h3 className="mt-2 font-semibold">{f.judul}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-slate-600">{f.deskripsi}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* FITUR */}
-      <section id="fitur" className="scroll-mt-20 py-20 sm:py-24">
-        <div className="mx-auto max-w-6xl px-6">
-          <div className="mx-auto max-w-2xl text-center">
-            <p className="text-xs font-bold uppercase tracking-widest text-primary">Fitur Unggulan</p>
-            <h2 className="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-              Semua yang Dibutuhkan Survei Kepuasan
+      {/* PERAN */}
+      <section id="peran" className="scroll-mt-20 border-t border-slate-200 py-20 sm:py-24">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <p className="text-xs font-medium uppercase tracking-[0.2em] text-slate-500">Peran</p>
+          <h2 className="mt-3 font-serif text-3xl font-bold leading-snug sm:text-4xl">
+            Tiga peran, satu alur kerja.
+          </h2>
+
+          <div className="mt-14 grid gap-10 md:grid-cols-3 md:gap-0">
+            {PERAN.map((p, i) => (
+              <div
+                key={p.label}
+                className={`md:px-10 ${i > 0 ? "md:border-l md:border-slate-200" : "md:pr-10"} ${
+                  i === 0 ? "md:pl-0" : ""
+                }`}
+              >
+                <p className="font-serif text-lg font-bold">{p.label}</p>
+                <p className="mt-3 text-sm leading-relaxed text-slate-600">{p.deskripsi}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* PENUTUP */}
+      <section className="border-t border-slate-200 bg-slate-50 py-16">
+        <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-6 px-4 sm:flex-row sm:items-center sm:px-6">
+          <div>
+            <h2 className="font-serif text-2xl font-bold sm:text-3xl">
+              Sudah menerima undangan survei?
             </h2>
-            <p className="mt-3 text-slate-600">
-              Dari penyusunan kuesioner hingga laporan PDF — satu sistem terintegrasi.
+            <p className="mt-2 text-sm text-slate-600">
+              Masuk dengan akun yang diberikan admin LPPM, atau pindai QR code dari email Anda.
             </p>
           </div>
-
-          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {FITUR.map((f) => (
-              <Card
-                key={f.judul}
-                className="group border-slate-200 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5"
-              >
-                <CardContent className="p-6">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 text-white shadow-md transition-transform duration-300 group-hover:scale-110">
-                    <f.icon className="h-5 w-5" />
-                  </div>
-                  <h3 className="mt-4 font-semibold text-slate-900">{f.judul}</h3>
-                  <p className="mt-1.5 text-sm leading-relaxed text-slate-600">{f.deskripsi}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* PERAN PENGGUNA */}
-      <section id="peran" className="scroll-mt-20 bg-gradient-to-b from-slate-50 to-white py-20 sm:py-24">
-        <div className="mx-auto max-w-6xl px-6">
-          <div className="mx-auto max-w-2xl text-center">
-            <p className="text-xs font-bold uppercase tracking-widest text-primary">Peran Pengguna</p>
-            <h2 className="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-              Satu Aplikasi, Tiga Peran
-            </h2>
-          </div>
-
-          <div className="mt-12 grid gap-5 md:grid-cols-3">
-            {PERAN.map((p) => (
-              <Card key={p.label} className="overflow-hidden border-slate-200 transition-shadow hover:shadow-lg">
-                <div className={`h-1.5 w-full bg-gradient-to-r ${p.warna}`} />
-                <CardContent className="p-6">
-                  <div className={`flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br ${p.warna} text-white`}>
-                    <p.icon className="h-5 w-5" />
-                  </div>
-                  <h3 className="mt-4 text-lg font-semibold text-slate-900">{p.label}</h3>
-                  <ul className="mt-3 space-y-2">
-                    {p.poin.map((pt) => (
-                      <li key={pt} className="flex items-start gap-2 text-sm text-slate-600">
-                        <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary/60" />
-                        {pt}
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="px-6 pb-20">
-        <div className="relative mx-auto max-w-5xl overflow-hidden rounded-3xl bg-gradient-to-br from-blue-700 via-blue-800 to-indigo-900 px-8 py-14 text-center shadow-2xl shadow-blue-900/20">
-          <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-white/10 blur-2xl" />
-          <div className="pointer-events-none absolute -bottom-20 -left-10 h-56 w-56 rounded-full bg-sky-400/20 blur-2xl" />
-          <h2 className="text-2xl font-bold text-white sm:text-3xl">
-            Siap Memberikan Masukan Terbaik?
-          </h2>
-          <p className="mx-auto mt-3 max-w-xl text-blue-100">
-            Masuk sekarang dan bagikan penilaian Anda — masukan mitra adalah bekal
-            perbaikan layanan LPPM.
-          </p>
-          <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
-            <Link href="/login">
-              <Button size="lg" variant="secondary" className="rounded-full px-8">
-                Masuk Sekarang <ArrowRight className="ml-1 h-4 w-4" />
-              </Button>
-            </Link>
-          </div>
+          <Link
+            href="/login"
+            className="inline-flex shrink-0 items-center bg-slate-900 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-slate-700"
+          >
+            Halaman Masuk <ArrowRight className="ml-2 h-4 w-4" />
+          </Link>
         </div>
       </section>
 
       {/* FOOTER */}
-      <footer className="border-t border-slate-200 bg-slate-950 py-10">
-        <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-6 text-center sm:flex-row sm:justify-between sm:text-left">
-          <div className="flex items-center gap-3">
-            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white">
-              <Image
-                src="/assets/unnes-logo.png"
-                alt="Logo UNNES"
-                width={26}
-                height={26}
-                className="h-6 w-6 object-contain"
-              />
-            </span>
-            <div>
-              <p className="text-sm font-bold text-white">SIKAP LPPM</p>
-              <p className="text-xs text-slate-400">Universitas Negeri Semarang</p>
-            </div>
+      <footer className="border-t border-slate-200 py-8">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-4 text-center sm:flex-row sm:px-6 sm:text-left">
+          <div className="flex items-center gap-2.5">
+            <Image
+              src="/assets/unnes-logo.png"
+              alt="Logo UNNES"
+              width={24}
+              height={24}
+              className="h-6 w-6 object-contain"
+            />
+            <p className="text-sm text-slate-600">
+              LPPM Universitas Negeri Semarang
+            </p>
           </div>
           <p className="text-xs text-slate-400">
-            © {new Date().getFullYear()} LPPM UNNES — SIKAP. Dibangun dengan Next.js sebagai
-            unified responsive web app.
+            © {new Date().getFullYear()} SIKAP LPPM · Dikembangkan dengan Next.js
           </p>
         </div>
       </footer>

@@ -1,5 +1,6 @@
 import { PrismaClient, Role } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import { KUESIONER_TAMBAHAN } from "./data-kuesioner";
 
 const prisma = new PrismaClient();
 
@@ -182,6 +183,30 @@ async function main() {
     });
   }
   console.log("  ✓ 3 contoh respons survei dibuat");
+
+  // ===== Kuesioner tambahan (aktif, belum ada respons) =====
+  for (const k of KUESIONER_TAMBAHAN) {
+    const dibuat = await prisma.kuesioner.create({
+      data: {
+        judul: k.judul,
+        deskripsi: k.deskripsi,
+        isActive: true,
+        createdById: admin.id,
+        pertanyaan: {
+          create: k.pertanyaan.map((p) => ({
+            teks: p.teks,
+            tipe: p.tipe,
+            urutan: p.urutan,
+            ...(p.tipe === "PILIHAN_GANDA" && p.opsi
+              ? { opsi: { create: p.opsi.map((teks) => ({ teks })) } }
+              : {}),
+          })),
+        },
+      },
+      include: { pertanyaan: true },
+    });
+    console.log(`  ✓ Kuesioner: ${dibuat.judul} (${dibuat.pertanyaan.length} pertanyaan)`);
+  }
 
   console.log("\n✅ Seed selesai.");
   console.log("=============================================");

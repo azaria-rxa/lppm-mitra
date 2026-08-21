@@ -13,6 +13,7 @@ import { Label } from "@/components/ui/label";
 function Form({ callbackUrl, token }: { callbackUrl?: string; token?: string }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [sukses, setSukses] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [qrLoading, setQrLoading] = useState(Boolean(token));
 
@@ -48,6 +49,7 @@ function Form({ callbackUrl, token }: { callbackUrl?: string; token?: string }) 
         toast.error("Email atau password salah.");
         return;
       }
+      setSukses(true);
       toast.success("Berhasil masuk.");
       const tujuan = callbackUrl && callbackUrl.startsWith("/") ? callbackUrl : undefined;
       router.push(tujuan ?? "/");
@@ -104,8 +106,25 @@ function Form({ callbackUrl, token }: { callbackUrl?: string; token?: string }) 
                   </button>
                 </div>
               </div>
-              <Button type="submit" className="w-full" size="lg" disabled={loading}>
-                {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Masuk"}
+              <Button
+                type="submit"
+                className="w-full"
+                size="lg"
+                disabled={loading || sukses}
+              >
+                {sukses ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <span className="ml-2">Berhasil masuk, mengalihkan…</span>
+                  </>
+                ) : loading ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <span className="ml-2">Memeriksa akun…</span>
+                  </>
+                ) : (
+                  "Masuk"
+                )}
               </Button>
             </form>
           )}
