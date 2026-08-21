@@ -1,49 +1,43 @@
-"use client";
+import { prisma } from "@/lib/prisma";
+import { getSessionUser } from "@/lib/session";
+import { RiwayatView } from "./riwayat-view";
 
-import useSWR from "swr";
-import { History } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { KartuRiwayat, type RiwayatItem } from "@/components/mitra/kartu-riwayat";
+export const dynamic = "force-dynamic";
 
-const fetcher = (url: string) =>
-  fetch(url).then((r) => r.json().then((j) => (r.ok ? j.data : Promise.reject(new Error(j.error)))));
+export default async function RiwayatPage() {
+  const user = await getSessionUser();
 
-export default function RiwayatPage() {
-  const { data, error, isLoading } = useSWR<RiwayatItem[]>("/api/survei/riwayat", fetcher);
+  let data: Awaited<ReturnType<typeof muatData>> = [];
+  if (user?.mitraId) {
+    data = await muatData(user.mitraId);
+  }
 
-  return (
-    <div className="space-y-4">
-      <div>
-        <h1 className="text-xl font-bold">Riwayat Survei</h1>
-        <p className="text-sm text-slate-500">Daftar kuesioner yang sudah Anda isi.</p>
-      </div>
+  return <RiwayatView initialData={data} />;
+}
 
-      {error && (
-        <Card>
-          <CardContent className="p-4 text-sm text-red-600">Gagal memuat riwayat.</CardContent>
-        </Card>
-      )}
+async function muatData(mitraId: string) {
+  const riwayat = await prisma.surveiResponse.findMany({
+    where: { mitraId },
+    orderBy: { submittedAt: "desc" },
+    include: {
+      kuesioner: { select: { judul: true, pertanyaan: { select: { id: true } } } },
+      jawaban: {
+        include: { pertanyaan: { select: { teks: true, tipe: true } }, opsi: { select: { teks: true } } },
+      },
+    },
+  });
 
-      {isLoading ? (
-        <div className="space-y-3">
-          <Skeleton className="h-24 w-full" />
-          <Skeleton className="h-24 w-full" />
-        </div>
-      ) : data && data.length > 0 ? (
-        <div className="space-y-3">
-          {data.map((item) => (
-            <KartuRiwayat key={item.id} item={item} />
-          ))}
-        </div>
-      ) : (
-        <Card>
-          <CardContent className="flex flex-col items-center gap-3 p-10 text-center text-sm text-slate-400">
-            <History className="h-8 w-8 text-slate-300" />
-            Belum ada survei yang Anda isi. Kunjungi menu <strong>Survei</strong>.
-          </CardContent>
-        </Card>
-      )}
-    </div>
-  );
+  return riwayat.map((r) => {
+    const skala = r.jawaban.filter((j) => j.nilaiSkala !== null);
+    const skor = skala.length
+      ? skala.reduce((a, b) => a + (b.nilaiSkala ?? 0), 0) / skala.length
+      : null;
+    return {
+      id: r.id,
+      judulKuesioner: r.kuesioner.judul,
+      submittedAt: r.submittedAt.toISOString(),
+      jumlahPertanyaan: r.kuesioner.pertanyaan.length,
+      skor,
+    };
+  });
 }

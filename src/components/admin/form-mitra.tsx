@@ -15,7 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { LABEL_JENIS_MITRA } from "@/lib/laporan";
-import type { MitraList } from "@/app/(admin)/mitra/page";
+import type { MitraList } from "@/app/(admin)/mitra/mitra-view";
 
 interface Props {
   initial?: MitraList;
