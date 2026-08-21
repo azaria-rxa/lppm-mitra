@@ -60,15 +60,16 @@ function Form({ callbackUrl, token }: { callbackUrl?: string; token?: string }) 
   }
 
   return (
-    <div>
+    <div className="animate-fade-in-up">
       {token && !qrLoading && (
-        <Button className="mb-4 w-full" size="lg" onClick={handleTokenLogin}>
+        <Button className="mb-4 w-full" size="lg" variant="gold" onClick={handleTokenLogin}>
           Masuk dengan Link / QR Perangkat Ini
         </Button>
       )}
-      <Card>
+      <Card className="overflow-hidden border-blue-950/10 shadow-2xl shadow-blue-950/20">
+        <div className="h-1.5 gradient-gold" />
         <CardHeader>
-          <CardTitle>Masuk ke SIKAP LPPM</CardTitle>
+          <CardTitle className="text-blue-950">Masuk ke SIKAP LPPM</CardTitle>
           <CardDescription>
             Gunakan akun yang diberikan oleh admin LPPM sesuai peran Anda.
           </CardDescription>

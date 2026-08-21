@@ -21,17 +21,22 @@ function KartuStat({
   nilai,
   sub,
   warna = "text-primary bg-primary/10",
+  aksen = "from-blue-900 to-blue-700",
 }: {
   icon: React.ElementType;
   label: string;
   nilai: string;
   sub?: string;
   warna?: string;
+  aksen?: string;
 }) {
   return (
-    <Card>
+    <Card className="card-hover group relative overflow-hidden">
+      <div className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${aksen}`} />
       <CardContent className="flex items-start gap-4 p-5">
-        <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-lg ${warna}`}>
+        <div
+          className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-lg transition-transform duration-200 group-hover:scale-110 ${warna}`}
+        >
           <Icon className="h-5 w-5" />
         </div>
         <div className="min-w-0">
@@ -64,18 +69,18 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+      <div className="animate-fade-in-up flex flex-wrap items-center justify-between gap-3 rounded-xl gradient-unnes p-5 text-white shadow-lg shadow-blue-950/20">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Dashboard Kepuasan</h1>
-          <p className="mt-1 text-sm text-slate-500">
+          <h1 className="text-2xl font-bold text-white">Dashboard Kepuasan</h1>
+          <p className="mt-1 text-sm text-blue-100">
             Indeks kepuasan mitra LPPM — data diperbarui otomatis.
           </p>
         </div>
         {data && (
-          <Badge variant="success" className="gap-1.5">
+          <Badge className="gap-1.5 border-transparent bg-white/15 text-white backdrop-blur">
             <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-300 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-amber-400" />
             </span>
             Live
           </Badge>
@@ -83,7 +88,7 @@ export default function DashboardPage() {
       </div>
 
       {error && (
-        <Card>
+        <Card className="card-hover">
           <CardContent className="p-4 text-sm text-red-600">
             Gagal memuat data dashboard. Muat ulang halaman.
           </CardContent>
@@ -106,6 +111,7 @@ export default function DashboardPage() {
               nilai={data.indeksKepuasan != null ? `${formatAngka(data.indeksKepuasan)} / 5` : "N/A"}
               sub={skorParsen != null ? `${formatAngka(skorParsen)}%` : "Belum ada data"}
               warna="text-blue-700 bg-blue-100"
+              aksen="from-blue-900 to-blue-600"
             />
             <KartuStat
               icon={Send}
@@ -113,6 +119,7 @@ export default function DashboardPage() {
               nilai={String(data.totalResponse)}
               sub="total respons"
               warna="text-emerald-700 bg-emerald-100"
+              aksen="from-emerald-700 to-emerald-500"
             />
             <KartuStat
               icon={Building2}
@@ -120,6 +127,7 @@ export default function DashboardPage() {
               nilai={String(data.totalMitra)}
               sub="terdaftar"
               warna="text-violet-700 bg-violet-100"
+              aksen="from-violet-700 to-violet-500"
             />
             <KartuStat
               icon={ClipboardList}
@@ -127,13 +135,14 @@ export default function DashboardPage() {
               nilai={String(data.totalKuesionerAktif)}
               sub="sedang berlangsung"
               warna="text-amber-700 bg-amber-100"
+              aksen="from-amber-500 to-amber-400"
             />
           </>
         )}
       </div>
 
       <div className="grid gap-4 lg:grid-cols-2">
-        <Card>
+        <Card className="card-hover">
           <CardHeader>
             <CardTitle className="text-base">Tren Skor Kepuasan</CardTitle>
             <CardDescription>Rata-rata skor skala (1-5) per bulan, 12 bulan terakhir</CardDescription>
@@ -147,7 +156,7 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="card-hover">
           <CardHeader>
             <CardTitle className="text-base">Skor per Jenis Mitra</CardTitle>
             <CardDescription>Desa binaan, industri, dan instansi pemerintah</CardDescription>
@@ -158,7 +167,7 @@ export default function DashboardPage() {
         </Card>
       </div>
 
-      <Card>
+      <Card className="card-hover">
         <CardHeader>
           <CardTitle className="text-base">Detail Skor per Pertanyaan</CardTitle>
           <CardDescription>Pertanyaan berjenis skala 1-5</CardDescription>

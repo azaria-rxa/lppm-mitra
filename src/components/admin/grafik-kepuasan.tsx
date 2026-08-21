@@ -18,9 +18,9 @@ import { LABEL_JENIS_MITRA } from "@/lib/laporan";
 import { formatAngka } from "@/lib/utils";
 
 const WARNA_JENIS: Record<string, string> = {
-  DESA_BINAAN: "#1d4ed8",
-  INDUSTRI: "#0ea5e9",
-  INSTANSI_PEMERINTAH: "#8b5cf6",
+  DESA_BINAAN: "#15803d", // hijau konservasi
+  INDUSTRI: "#1e3a6e", // biru UNNES
+  INSTANSI_PEMERINTAH: "#eab308", // kuning emas sayap logo
 };
 
 export function GrafikTren({ data }: { data: TrenBulanan[] }) {
@@ -34,8 +34,8 @@ export function GrafikTren({ data }: { data: TrenBulanan[] }) {
       <AreaChart data={normalisasi} margin={{ top: 8, right: 8, left: -20, bottom: 0 }}>
         <defs>
           <linearGradient id="gradSkor" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#1d4ed8" stopOpacity={0.35} />
-            <stop offset="100%" stopColor="#1d4ed8" stopOpacity={0.02} />
+            <stop offset="0%" stopColor="#1e3a6e" stopOpacity={0.4} />
+            <stop offset="100%" stopColor="#1e3a6e" stopOpacity={0.03} />
           </linearGradient>
         </defs>
         <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
@@ -52,8 +52,8 @@ export function GrafikTren({ data }: { data: TrenBulanan[] }) {
           type="monotone"
           dataKey="skorTampil"
           name="Skor kepuasan"
-          stroke="#1d4ed8"
-          strokeWidth={2}
+          stroke="#1e3a6e"
+          strokeWidth={2.5}
           fill="url(#gradSkor)"
           connectNulls
         />

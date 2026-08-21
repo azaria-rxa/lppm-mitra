@@ -57,13 +57,13 @@ export function AdminSidebar({ user }: Props) {
             href={item.href}
             onClick={() => setOpen(false)}
             className={cn(
-              "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+              "flex items-center gap-3 rounded-lg border-l-4 px-3 py-2 text-sm font-medium transition-all duration-200",
               isAktif(item.href)
-                ? "bg-primary text-primary-foreground"
-                : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                ? "border-amber-400 bg-gradient-to-r from-blue-900 to-blue-800 text-white shadow-md shadow-blue-900/20"
+                : "border-transparent text-slate-600 hover:translate-x-0.5 hover:border-amber-300 hover:bg-blue-50 hover:text-blue-900"
             )}
           >
-            <item.icon className="h-4 w-4" />
+            <item.icon className={cn("h-4 w-4 transition-transform", isAktif(item.href) && "text-amber-300")} />
             {item.label}
           </Link>
         ))}
@@ -73,21 +73,23 @@ export function AdminSidebar({ user }: Props) {
 
   const SidebarKonten = (
     <div className="flex h-full flex-col">
-      <div className="flex h-16 items-center gap-2.5 border-b px-5">
-        <Image
-          src="/assets/unnes-logo.png"
-          alt="Logo UNNES"
-          width={32}
-          height={32}
-          className="h-8 w-8 object-contain"
-        />
+      <div className="flex h-16 items-center gap-2.5 border-b bg-gradient-to-r from-blue-950 to-blue-900 px-5">
+        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white">
+          <Image
+            src="/assets/unnes-logo.png"
+            alt="Logo UNNES"
+            width={26}
+            height={26}
+            className="h-6.5 w-6.5 object-contain"
+          />
+        </span>
         <span className="leading-tight">
-          <span className="block font-serif text-base font-bold tracking-tight">SIKAP LPPM</span>
-          <span className="block text-[11px] uppercase tracking-widest text-slate-400">
+          <span className="block font-serif text-base font-bold tracking-tight text-white">SIKAP LPPM</span>
+          <span className="block text-[11px] uppercase tracking-widest text-amber-300">
             {user.role === "ADMIN" ? "Panel Admin" : "Panel Pimpinan"}
           </span>
         </span>
-        <button className="ml-auto rounded p-1 text-slate-500 lg:hidden" onClick={() => setOpen(false)} aria-label="Tutup menu">
+        <button className="ml-auto rounded p-1 text-white/70 hover:text-white lg:hidden" onClick={() => setOpen(false)} aria-label="Tutup menu">
           <X className="h-5 w-5" />
         </button>
       </div>
@@ -96,7 +98,7 @@ export function AdminSidebar({ user }: Props) {
       </div>
       <div className="border-t p-4">
         <div className="mb-3 flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
+          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-blue-800 to-blue-600 text-sm font-bold text-white ring-2 ring-amber-400/60">
             {user.nama.charAt(0).toUpperCase()}
           </div>
           <div className="min-w-0">
@@ -129,19 +131,21 @@ export function AdminSidebar({ user }: Props) {
       </aside>
 
       {/* Topbar mobile */}
-      <header className="fixed inset-x-0 top-0 z-30 flex h-16 items-center gap-2 border-b bg-white px-4 lg:hidden">
-        <Button variant="ghost" size="icon" onClick={() => setOpen(true)} aria-label="Buka menu">
+      <header className="fixed inset-x-0 top-0 z-30 flex h-16 items-center gap-2 border-b bg-gradient-to-r from-blue-950 to-blue-900 px-4 text-white lg:hidden">
+        <Button variant="ghost" size="icon" onClick={() => setOpen(true)} aria-label="Buka menu" className="text-white hover:bg-white/10 hover:text-white">
           <Menu className="h-5 w-5" />
         </Button>
-        <Image
-          src="/assets/unnes-logo.png"
-          alt="Logo UNNES"
-          width={28}
-          height={28}
-          className="h-7 w-7 object-contain"
-        />
+        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white">
+          <Image
+            src="/assets/unnes-logo.png"
+            alt="Logo UNNES"
+            width={22}
+            height={22}
+            className="h-5.5 w-5.5 object-contain"
+          />
+        </span>
         <span className="font-bold">SIKAP LPPM</span>
-        <div className="ml-auto flex items-center gap-2 text-xs text-slate-500">
+        <div className="ml-auto flex items-center gap-2 text-xs text-amber-300">
           <span>{user.nama}</span>
         </div>
       </header>

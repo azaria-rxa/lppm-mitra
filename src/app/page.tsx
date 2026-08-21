@@ -74,7 +74,8 @@ export default function HomePage() {
         </div>
 
         <div className="relative mx-auto max-w-6xl px-4 py-28 sm:px-6 sm:py-36">
-          <p className="text-xs font-medium uppercase tracking-[0.2em] text-slate-300">
+          <p className="flex items-center gap-2 text-xs font-medium uppercase tracking-[0.2em] text-amber-300">
+            <span className="h-px w-8 bg-amber-400" />
             Lembaga Penelitian dan Pengabdian kepada Masyarakat
           </p>
           <h1 className="mt-5 max-w-3xl font-serif text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl">
@@ -88,13 +89,14 @@ export default function HomePage() {
           <div className="mt-10 flex flex-wrap gap-4">
             <Link
               href="/login"
-              className="inline-flex items-center bg-white px-6 py-3 text-sm font-medium text-slate-900 transition-colors hover:bg-slate-200"
+              className="group inline-flex items-center rounded-full bg-gradient-to-b from-amber-400 to-amber-500 px-6 py-3 text-sm font-semibold text-blue-950 shadow-lg shadow-amber-500/20 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-amber-500/30"
             >
-              Masuk Aplikasi <ArrowRight className="ml-2 h-4 w-4" />
+              Masuk Aplikasi{" "}
+              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
             <Link
               href="#tentang"
-              className="inline-flex items-center border border-white/50 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-white/10"
+              className="inline-flex items-center rounded-full border border-white/50 px-6 py-3 text-sm font-medium text-white transition-all hover:-translate-y-0.5 hover:bg-white/10"
             >
               Tentang Sistem
             </Link>
@@ -151,13 +153,16 @@ export default function HomePage() {
             Cukup apa adanya, tanpa fitur yang tidak terpakai.
           </h2>
 
-          <div className="mt-14 grid gap-x-12 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {FITUR.map((f, i) => (
-              <div key={f.judul} className="border-t border-slate-300 pt-5">
-                <p className="font-serif text-sm text-slate-400">
+              <div
+                key={f.judul}
+                className="card-hover group rounded-xl border border-slate-200 bg-white p-6 transition-colors hover:border-blue-900/20"
+              >
+                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-blue-900 to-blue-700 font-serif text-sm font-bold text-amber-300 transition-transform duration-200 group-hover:scale-110">
                   {String(i + 1).padStart(2, "0")}
-                </p>
-                <h3 className="mt-2 font-semibold">{f.judul}</h3>
+                </span>
+                <h3 className="mt-4 font-semibold text-blue-950">{f.judul}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-slate-600">{f.deskripsi}</p>
               </div>
             ))}
@@ -174,17 +179,21 @@ export default function HomePage() {
           </h2>
 
           <div className="mt-14 grid gap-10 md:grid-cols-3 md:gap-0">
-            {PERAN.map((p, i) => (
-              <div
-                key={p.label}
-                className={`md:px-10 ${i > 0 ? "md:border-l md:border-slate-200" : "md:pr-10"} ${
-                  i === 0 ? "md:pl-0" : ""
-                }`}
-              >
-                <p className="font-serif text-lg font-bold">{p.label}</p>
-                <p className="mt-3 text-sm leading-relaxed text-slate-600">{p.deskripsi}</p>
-              </div>
-            ))}
+            {PERAN.map((p, i) => {
+              const dot = ["bg-blue-800", "bg-emerald-600", "bg-amber-500"][i];
+              return (
+                <div
+                  key={p.label}
+                  className={`group md:px-10 ${i > 0 ? "md:border-l md:border-slate-200" : "md:pr-10"} ${
+                    i === 0 ? "md:pl-0" : ""
+                  }`}
+                >
+                  <span className={`inline-block h-2.5 w-2.5 rounded-full ${dot} transition-transform group-hover:scale-125`} />
+                  <p className="mt-3 font-serif text-lg font-bold text-blue-950">{p.label}</p>
+                  <p className="mt-3 text-sm leading-relaxed text-slate-600">{p.deskripsi}</p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>

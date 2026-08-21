@@ -4,48 +4,55 @@
 
 @layer base {
   :root {
+    /* Palet identitas UNNES: biru "kemuliaan rumah ilmu" sebagai primary,
+       kuning emas (sayap logo) sebagai gold accent, hijau konservasi sebagai secondary accent */
     --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
+    --foreground: 222 30% 12%;
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
+    --card-foreground: 222 30% 12%;
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 221 83% 33%;
+    --popover-foreground: 222 30% 12%;
+    --primary: 219 68% 26%;
     --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --secondary: 213 45% 95%;
+    --secondary-foreground: 219 68% 22%;
+    --muted: 213 35% 95.5%;
+    --muted-foreground: 215 16% 46.9%;
+    --accent: 42 92% 95%;
+    --accent-foreground: 32 70% 25%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221 83% 33%;
+    --border: 214 32% 90%;
+    --input: 214 32% 90%;
+    --ring: 219 68% 26%;
     --radius: 0.75rem;
+
+    /* Token tambahan bermerek UNNES (dipakai via arbitrary value bila perlu) */
+    --gold: 42 92% 50%;
+    --gold-foreground: 32 70% 15%;
+    --conservation: 142 60% 27%;
   }
 
   .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 3.7% 15.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
+    --background: 222 47% 6%;
+    --foreground: 210 40% 98%;
+    --card: 222 40% 9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 47% 6%;
     --popover-foreground: 0 0% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 240 3.7% 15.9%;
+    --primary: 42 92% 55%;
+    --primary-foreground: 222 47% 11%;
+    --secondary: 222 30% 15%;
     --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
+    --muted: 222 30% 15%;
     --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
+    --accent: 222 30% 15%;
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
+    --border: 222 30% 18%;
+    --input: 222 30% 18%;
+    --ring: 42 92% 55%;
   }
 }
 
@@ -71,5 +78,84 @@
   }
   .safe-bottom {
     padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 1rem);
+  }
+
+  /* Kartu naik & bayangan lebih tebal saat disentuh/hover */
+  .card-hover {
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+  .card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px -8px rgb(21 58 122 / 0.22);
+    border-color: hsl(var(--primary) / 0.35);
+  }
+
+  /* Gradasi bermerek UNNES */
+  .gradient-unnes {
+    background-image: linear-gradient(135deg, hsl(219 68% 22%), hsl(219 72% 32%) 55%, hsl(213 70% 28%));
+  }
+  .gradient-gold {
+    background-image: linear-gradient(135deg, hsl(42 95% 58%), hsl(36 92% 48%));
+  }
+  .text-gradient-unnes {
+    background-image: linear-gradient(90deg, hsl(219 72% 30%), hsl(199 75% 38%));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .underline-grow {
+    position: relative;
+  }
+  .underline-grow::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    height: 2px;
+    width: 0%;
+    background: hsl(var(--gold));
+    transition: width 0.25s ease;
+  }
+  .underline-grow:hover::after {
+    width: 100%;
+  }
+}
+
+@layer base {
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes pulse-ring {
+    0% {
+      box-shadow: 0 0 0 0 hsl(var(--gold) / 0.45);
+    }
+    100% {
+      box-shadow: 0 0 0 8px hsl(var(--gold) / 0);
+    }
+  }
+  .animate-fade-in-up {
+    animation: fade-in-up 0.5s ease both;
+  }
+  .animate-fade-in {
+    animation: fade-in 0.6s ease both;
+  }
+  .animate-pulse-ring {
+    animation: pulse-ring 1.8s ease-out infinite;
   }
 }

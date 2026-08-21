@@ -15,11 +15,11 @@ export interface RiwayatItem {
 
 export function KartuRiwayat({ item }: { item: RiwayatItem }) {
   return (
-    <Card>
+    <Card className="card-hover">
       <CardContent className="p-4">
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-start gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 transition-transform duration-200 group-hover:scale-110">
               <CheckCircle2 className="h-5 w-5" />
             </div>
             <div>
