@@ -29,6 +29,16 @@ export function GrafikTren({ data }: { data: TrenBulanan[] }) {
     skorTampil: d.skor != null ? Number(d.skor.toFixed(2)) : null,
   }));
 
+  const adaData = normalisasi.some((d) => d.skorTampil != null);
+
+  if (!adaData) {
+    return (
+      <div className="flex h-[280px] items-center justify-center text-sm text-slate-400">
+        Belum ada jawaban skala. Grafik tren akan muncul setelah mitra mengisi survei.
+      </div>
+    );
+  }
+
   return (
     <ResponsiveContainer width="100%" height={280}>
       <AreaChart data={normalisasi} margin={{ top: 8, right: 8, left: -20, bottom: 0 }}>
@@ -56,6 +66,8 @@ export function GrafikTren({ data }: { data: TrenBulanan[] }) {
           strokeWidth={2.5}
           fill="url(#gradSkor)"
           connectNulls
+          dot={{ r: 3.5, fill: "#1e3a6e", strokeWidth: 0 }}
+          activeDot={{ r: 5 }}
         />
       </AreaChart>
     </ResponsiveContainer>
@@ -69,6 +81,16 @@ export function GrafikPerJenis({ data }: { data: SkorPerJenisMitra[] }) {
     jumlah: d.jumlah,
     warna: WARNA_JENIS[d.jenis],
   }));
+
+  const adaData = normalisasi.some((d) => d.skor != null);
+
+  if (!adaData) {
+    return (
+      <div className="flex h-[280px] items-center justify-center text-sm text-slate-400">
+        Belum ada jawaban skala. Grafik per jenis mitra akan muncul setelah mitra mengisi survei.
+      </div>
+    );
+  }
 
   return (
     <ResponsiveContainer width="100%" height={280}>
