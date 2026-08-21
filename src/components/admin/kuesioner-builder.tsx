@@ -51,15 +51,22 @@ export function KuesionerBuilder({ initial, onDone }: Props) {
       [{ key: newKey(), teks: "", tipe: "SKALA_1_5", opsi: [] }]
   );
 
-  const valid = useMemo(() => {
-    if (judul.trim().length < 3) return false;
-    if (pertanyaan.length === 0) return false;
-    return pertanyaan.every(
-      (p) =>
-        p.teks.trim().length >= 1 &&
-        (p.tipe !== "PILIHAN_GANDA" || p.opsi.length >= 2 && p.opsi.every((o) => o.teks.trim()))
-    );
+  const masalah = useMemo(() => {
+    const list: string[] = [];
+    if (judul.trim().length < 3) list.push("Judul minimal 3 karakter");
+    pertanyaan.forEach((p, i) => {
+      if (!p.teks.trim()) list.push(`Pertanyaan #${i + 1} belum diisi`);
+      if (p.tipe === "PILIHAN_GANDA") {
+        if (p.opsi.length < 2) list.push(`Pertanyaan #${i + 1}: pilihan ganda butuh minimal 2 opsi`);
+        else {
+          const kosong = p.opsi.filter((o) => !o.teks.trim()).length;
+          if (kosong > 0) list.push(`Pertanyaan #${i + 1}: ${kosong} opsi masih kosong`);
+        }
+      }
+    });
+    return list;
   }, [judul, pertanyaan]);
+  const valid = masalah.length === 0;
 
   function update(i: number, patch: Partial<PertanyaanDraft>) {
     setPertanyaan((arr) => arr.map((p, idx) => (idx === i ? { ...p, ...patch } : p)));
@@ -268,6 +275,17 @@ export function KuesionerBuilder({ initial, onDone }: Props) {
           </div>
         ))}
       </div>
+
+      {!valid && (
+        <div className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800">
+          <p className="font-medium">Lengkapi dulu sebelum menyimpan:</p>
+          <ul className="ml-4 mt-1 list-disc space-y-0.5">
+            {masalah.slice(0, 5).map((m) => (
+              <li key={m}>{m}</li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       <Button className="w-full" onClick={submit} disabled={!valid || loading}>
         {loading && <Loader2 className="h-4 w-4 animate-spin" />}
