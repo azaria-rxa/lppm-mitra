@@ -19,6 +19,7 @@ export const ADMIN_ROUTES = [
   "/kuesioner",
   "/mitra",
   "/laporan",
+  "/pengguna",
 ] as const;
 
 export const MITRA_ROUTES = [

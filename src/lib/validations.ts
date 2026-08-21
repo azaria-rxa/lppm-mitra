@@ -79,6 +79,25 @@ export const registerSchema = z.object({
   role: roleEnum.default(Role.MITRA),
 });
 
+// ===== Pengguna (admin & pimpinan; akun mitra dikelola lewat halaman Mitra) =====
+const peranStaf = z.enum([Role.ADMIN, Role.PIMPINAN], {
+  message: "Peran harus Admin atau Pimpinan",
+});
+
+export const penggunaCreateSchema = z.object({
+  nama: z.string().min(2, "Nama minimal 2 karakter"),
+  email: z.string().email("Email tidak valid"),
+  password: z.string().min(6, "Password minimal 6 karakter"),
+  role: peranStaf,
+});
+
+export const penggunaUpdateSchema = z.object({
+  nama: z.string().min(2, "Nama minimal 2 karakter").optional(),
+  email: z.string().email("Email tidak valid").optional(),
+  password: z.string().min(6, "Password minimal 6 karakter").optional().or(z.literal("")),
+  role: peranStaf.optional(),
+});
+
 // ===== Laporan =====
 export const laporanSchema = z.object({
   jenis: z.enum(["BULANAN", "TAHUNAN"]),

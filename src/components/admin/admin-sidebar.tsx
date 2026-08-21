@@ -12,6 +12,7 @@ import {
   LayoutDashboard,
   LogOut,
   Menu,
+  Users,
   X,
 } from "lucide-react";
 import { useState } from "react";
@@ -30,6 +31,7 @@ const NAV_ADMIN = [
   { href: "/kuesioner", label: "Kuesioner", icon: ClipboardList },
   { href: "/mitra", label: "Mitra", icon: Building2 },
   { href: "/laporan", label: "Laporan", icon: FileText },
+  { href: "/pengguna", label: "Pengguna", icon: Users },
 ];
 
 const NAV_PIMPINAN = [
