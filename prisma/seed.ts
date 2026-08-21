@@ -157,32 +157,63 @@ async function main() {
   });
   console.log(`  ✓ Kuesioner: ${kuesioner.judul} (${kuesioner.pertanyaan.length} pertanyaan)`);
 
-  // ===== Contoh respons (biar dashboard langsung ada data) =====
-  const [q1, q2, q3, q4, q5] = kuesioner.pertanyaan.sort((a, b) => a.urutan - b.urutan);
-  const contoh = [
-    { mitra: mitraTerdaftar[0], skala: [5, 4], pilihan: q3.opsi[1], teks: "Layanan sangat membantu dan responsif. Terima kasih!" },
-    { mitra: mitraTerdaftar[1], skala: [4, 4], pilihan: q3.opsi[1], teks: "Kerja sama cukup lancar, hanya butuh kecepatan tindak lanjut." },
-    { mitra: mitraTerdaftar[2], skala: [3, 4], pilihan: q3.opsi[2], teks: "Beberapa dokumen lambat diproses, mohon diperbaiki." },
-  ];
+  // ===== Contoh respons tersebar 12 bulan terakhir (grafik tren langsung berisi) =====
+  const semuaKuesioner = await prisma.kuesioner.findMany({
+    include: { pertanyaan: { include: { opsi: true } } },
+    orderBy: { createdAt: "asc" },
+  });
 
-  for (const c of contoh) {
+  // Pasangan unik kuesioner x mitra (batasi 12 = satu per bulan)
+  const pasangan: { kIdx: number; mIdx: number }[] = [];
+  for (let ki = 0; ki < semuaKuesioner.length && pasangan.length < 12; ki++) {
+    for (let mi = 0; mi < mitraTerdaftar.length && pasangan.length < 12; mi++) {
+      pasangan.push({ kIdx: ki, mIdx: mi });
+    }
+  }
+
+  const sekarang = new Date();
+  const teksContoh = [
+    "Layanan sangat membantu dan responsif. Terima kasih!",
+    "Kerja sama cukup lancar, hanya butuh tindak lanjut lebih cepat.",
+    "Beberapa dokumen lambat diproses, mohon diperbaiki.",
+  ];
+  const polaSkor = [4, 5, 3, 4, 5, 4];
+
+  for (let j = 0; j < pasangan.length; j++) {
+    const { kIdx, mIdx } = pasangan[j];
+    const k = semuaKuesioner[kIdx];
+    const mitra = mitraTerdaftar[mIdx];
+    const offsetBulan = pasangan.length - 1 - j; // paling lama di awal
+    const submittedAt = new Date(
+      sekarang.getFullYear(),
+      sekarang.getMonth() - offsetBulan,
+      10 + (j % 15)
+    );
+    const skor = polaSkor[j % polaSkor.length];
+
     await prisma.surveiResponse.create({
       data: {
-        kuesionerId: kuesioner.id,
-        mitraId: c.mitra.id,
+        kuesionerId: k.id,
+        mitraId: mitra.id,
+        submittedAt,
         jawaban: {
-          create: [
-            { pertanyaanId: q1.id, nilaiSkala: c.skala[0] },
-            { pertanyaanId: q2.id, nilaiSkala: c.skala[1] },
-            { pertanyaanId: q3.id, opsiId: c.pilihan.id },
-            { pertanyaanId: q4.id, nilaiSkala: c.skala[0] === 5 ? 5 : 4 },
-            { pertanyaanId: q5.id, teksBebas: c.teks, sentimen: c.skala[0] === 5 ? "POSITIF" : c.skala[0] === 3 ? "NEGATIF" : "NETRAL" },
-          ],
+          create: k.pertanyaan.map((p) => {
+            if (p.tipe === "SKALA_1_5") return { pertanyaanId: p.id, nilaiSkala: skor };
+            if (p.tipe === "PILIHAN_GANDA" && p.opsi.length > 0) {
+              return { pertanyaanId: p.id, opsiId: p.opsi[j % p.opsi.length].id };
+            }
+            return {
+              pertanyaanId: p.id,
+              teksBebas: teksContoh[j % teksContoh.length],
+              sentimen:
+                skor === 5 ? "POSITIF" : skor === 3 ? "NEGATIF" : ("NETRAL" as const),
+            };
+          }),
         },
       },
     });
   }
-  console.log("  ✓ 3 contoh respons survei dibuat");
+  console.log(`  ✓ ${pasangan.length} contoh respons tersebar 12 bulan terakhir`);
 
   // ===== Kuesioner tambahan (aktif, belum ada respons) =====
   for (const k of KUESIONER_TAMBAHAN) {
